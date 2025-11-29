@@ -113,5 +113,44 @@
             $('.navbar-collapse').collapse('hide');
         }
     });
+
+    // View More Experience Toggle
+    $('#viewMoreBtn').on('click', function() {
+        var $btn = $(this);
+        var $visibleItems = $('.experience-item-visible');
+        var isExpanded = $visibleItems.length > 0 || $btn.hasClass('expanded');
+        
+        if (isExpanded) {
+            // Hide additional experiences with animation
+            $visibleItems.removeClass('experience-item-visible').fadeOut(400, function() {
+                $(this).addClass('experience-item-hidden');
+            });
+            $btn.removeClass('expanded');
+            $btn.html('<i class="fas fa-chevron-down mr-2"></i>View More Experience');
+            
+            // Smooth scroll to experience section after hiding
+            setTimeout(function() {
+                $('html, body').animate({
+                    scrollTop: $('#experience').offset().top - 100
+                }, 500);
+            }, 450);
+        } else {
+            // Show additional experiences with animation
+            var $hiddenItems = $('.experience-item-hidden');
+            $hiddenItems.removeClass('experience-item-hidden').addClass('experience-item-visible').hide().fadeIn(500);
+            $btn.addClass('expanded');
+            $btn.html('<i class="fas fa-chevron-up mr-2"></i>View Less Experience');
+            
+            // Smooth scroll to show the revealed content
+            setTimeout(function() {
+                var $firstVisible = $('.experience-item-visible').first();
+                if ($firstVisible.length) {
+                    $('html, body').animate({
+                        scrollTop: $firstVisible.offset().top - 100
+                    }, 700);
+                }
+            }, 350);
+        }
+    });
 })(jQuery);
 
